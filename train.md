@@ -27,3 +27,8 @@ Probable prime checker:
 - permutation formulation (R out of N): = N! / (N - R)!
 - combination formula (R out of N): = N! / (N-R)! * R!
 - Rules: A(=set{}), B(=set{}), X(=len(A)), Y(=len(B)), r of product: extractAny(A) + extractAny(B) => X*Y possibility. r of sum: extractAny(A + B) => X+Y possibility.
+(NOT FINISH, --pascal triangle)
+
+[Basics of Disjoint Data Structures](https://www.hackerearth.com/fr/practice/data-structures/disjoint-data-strutures/basics-of-disjoint-data-structures/tutorial/) :
+- union
+- find
