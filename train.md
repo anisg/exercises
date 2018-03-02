@@ -32,3 +32,29 @@ Probable prime checker:
 [Basics of Disjoint Data Structures](https://www.hackerearth.com/fr/practice/data-structures/disjoint-data-strutures/basics-of-disjoint-data-structures/tutorial/) :
 - union
 - find
+
+day2
+
+[Lagrange multiplier](https://en.wikipedia.org/wiki/Lagrange_multiplier)  (by doing exo tic-tac-toe):
+( NOT FINISH --to check)
+
+exos:
+
+[contest training, March Easy 2018](https://www.hackerearth.com/en-us/challenge/competitive/march-easy-18/)
+- exos: 1/5 perfect, 3/5 exercises tried
+- points: 120/500 points
+- finish: 264/1545 participants
+
+day3
+
+theory:
+
+
+exos:
+
+day4
+
+theory:
+
+exos:
+
