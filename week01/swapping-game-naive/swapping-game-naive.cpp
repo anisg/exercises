@@ -35,9 +35,9 @@ void unswap(string & s)
 	s = cpy;
 }
 
-
 string performUnswap(string & s, int nb){
 	for (int i = 0; i < nb;i++){
+		cout << s << endl;
 		unswap(s);
 	}
 	return s;
