@@ -42,4 +42,27 @@ Probable prime checker:
 
 ------------
 - sum of integers: sum(1 + 2 + 3 + ... + N) <=> ( N*(N+1) ) /2
-- 
+
+----
+- number of possibilites
+
+-----------
+identite remarquable:
+(a + b)^2 = a^2 + 2ab + b^2
+(a - b)^2 = a^2 - 2ab + b^2
+(a + b)(a - b) = a^2 - b^2
+
+- quadratic equation: equation of degre 2:  ax^2 + bx + c = 0 with (a != 0)
+- linear equation: equation of degree 1: ax + b = 0 (with a != 0) || ax + by + c = 0 (with a and b != 0)
+
+law of exponents:
+
+- x^m + x^n = x^(m + n)
+
+- (x^m)^n = x^(mn)
+
+binary theorem
+
+
+---------
+
