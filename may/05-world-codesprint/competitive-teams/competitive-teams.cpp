@@ -16,8 +16,8 @@ struct Set {
 	vector<vector<int>> v;
 	int c[100000+1];
 	int			mc;
-	size_t		t;
-	size_t x[100000+1];
+	long		t;
+	long x[100000+1];
 
 	Set(int n){
 		//take n into account...
@@ -36,12 +36,12 @@ struct Set {
 
 	void calculCompet(){
 		t = 0;
-		size_t l = 0;
+		long l = 0;
 		x[0] = -1;
 		for (int step = 1; step <= mc-1; step += 1){
 			x[step] = 0;
 			for (int i = 0; i + step <= mc; i += 1){
-				x[step] += ((size_t)c[i]) * c[i + step];
+				x[step] += ((long)c[i]) * ((long)c[i + step]);
 			}
 			t += x[step];
 		}

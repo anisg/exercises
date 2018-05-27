@@ -27,7 +27,6 @@ size_t resolve(int *A, int n, int m, int k){
 				(*mn)[n] = e.second;
 			else
 				(*mn)[n] += e.second;
-			e.second = 0;
 		}
 		if (A[i] % m == k){
 			sol += 1;
@@ -37,23 +36,77 @@ size_t resolve(int *A, int n, int m, int k){
 		else
 			(*mn)[A[i] % m] += 1;
 		swapPtr(&map, &mn);
+		*mn = {};
 	}
 	return sol;
 }
 
-int main(){
-	int T;
+vector<string> split_string(string);
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
 
-	cin >> T;
-	for (int t = 0; t < T; t += 1){
-		//parse each query
-		int n,m,k;
-		cin >> n >> m >> k;
-		int a;
-		for (int i = 0; i < n; i += 1){
-			cin >> a;
-			A[i] = a;
-		}
-		cout << resolve(A, n, m, k) << '\n';
-	}
+    int t;
+    cin >> t;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        string nmk_temp;
+        getline(cin, nmk_temp);
+
+        vector<string> nmk = split_string(nmk_temp);
+
+        int n = stoi(nmk[0]);
+
+        int m = stoi(nmk[1]);
+
+        int k = stoi(nmk[2]);
+
+        string A_temp_temp;
+        getline(cin, A_temp_temp);
+
+        vector<string> A_temp = split_string(A_temp_temp);
+
+        for (int i = 0; i < n; i++) {
+            int A_item = stoi(A_temp[i]);
+            A[i] = A_item;
+        }
+
+        long result = resolve(A, n, m, k);
+
+        fout << result << "\n";
+    }
+
+    fout.close();
+
+    return 0;
+}
+
+vector<string> split_string(string input_string) {
+    string::iterator new_end = unique(input_string.begin(), input_string.end(), [] (const char &x, const char &y) {
+        return x == y and x == ' ';
+    });
+
+    input_string.erase(new_end, input_string.end());
+
+    while (input_string[input_string.length() - 1] == ' ') {
+        input_string.pop_back();
+    }
+
+    vector<string> splits;
+    char delimiter = ' ';
+
+    size_t i = 0;
+    size_t pos = input_string.find(delimiter);
+
+    while (pos != string::npos) {
+        splits.push_back(input_string.substr(i, pos - i));
+
+        i = pos + 1;
+        pos = input_string.find(delimiter, i);
+    }
+
+    splits.push_back(input_string.substr(i, min(pos, input_string.length()) - i + 1));
+
+    return splits;
 }
