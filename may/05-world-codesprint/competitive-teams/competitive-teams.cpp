@@ -2,20 +2,31 @@
 
 using namespace std;
 
+float     fact(long a){
+	return tgamma(a+1);
+}
+
+long comb(int n, int r){
+	if (r > n) return 0;
+	return (fact(n)/(fact(r)*(fact(n-r))));
+}
+
 struct Set {
 	unordered_map<int,int> pos;
 	vector<vector<int>> v;
 	int c[100000+1];
 	int			mc;
-	int x[100000+1];
+	size_t		t;
+	size_t x[100000+1];
 
 	Set(int n){
 		//take n into account...
 		c[0] = 0;
-		x[0] = 0;
+		x[0] = -1;
 		c[1] = n;
 		x[1] = 0;
 		mc = 1;
+		t = 0;
 	}
 
 	void createSubSet(int x) {
@@ -24,23 +35,20 @@ struct Set {
 	}
 
 	void calculCompet(){
-		size_t t = 0;
+		t = 0;
 		size_t l = 0;
+		x[0] = -1;
 		for (int step = 1; step <= mc-1; step += 1){
-			//cout << "c["<< step <<"] =" << c[step] << "\n";
 			x[step] = 0;
 			for (int i = 0; i + step <= mc; i += 1){
-				x[step] += c[i] * c[i + step];
+				x[step] += ((size_t)c[i]) * c[i + step];
 			}
-			//cout << "px["<< step <<"] =" << x[step] << "\n";
 			t += x[step];
 		}
-		//cout << "total =" << t << "\n";
 		l = t;
 		for (int step = mc-1; step >= 1; step -= 1){
 			l -= x[step];
 			x[step] = t-l;
-			//cout << "  dx["<< step <<"] =" << x[step] << "\n";
 		}
 	}
 
@@ -78,13 +86,18 @@ struct Set {
 		calculCompet();
 	}
 
-	int competitiveness(int c) {
-		if (c >= mc)
+	int competitiveness(int cn) {
+		if (cn >= mc)
 			return 0;
-		if (c == 0){
-			return -10;
+		if (cn == 0 && x[cn] == -1){
+			//calculate
+			x[cn] = 0;
+			for (int i = 1; i <= mc; i += 1){
+				x[cn] += comb(c[i], 2);
+			}
+			x[cn] += t;
 		}
-		return x[c];
+		return x[cn];
 	}
 };
 
