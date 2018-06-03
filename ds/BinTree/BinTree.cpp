@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// BinTree : sum,update,range,get
+// BinTree : sum, update, range, get
 struct BinTree {
 	vector<int> d; int n;
 	BinTree(vector<int> & v) : d(vector<int>(n, 0)), n((int)v.size()+1) {
