@@ -2,12 +2,7 @@
 
 using namespace std;
 
-/*
-	simple UnionFind template
-	- join a b : merge a and b together.
-	- set x : return the set of x
-	note: typename must overload `+=` to work correctly
-*/
+// UnionFind : join, set, find
 template<typename T> struct UnionFind {
 	vector<int> p; vector<T> sets;
 	UnionFind(int n, T (*f)(int i) = nullptr){

@@ -7,9 +7,7 @@ using namespace std;
 //BinTree: sum,update,range,get
 struct BinTree {
 	vector<int> d; int n;
-	BinTree(vector<int> & v){
-		n = (int)v.size()+1;
-		d = vector<int>(n, 0);
+	BinTree(vector<int> & v) : d(vector<int>(n, 0)), n((int)v.size()+1) {
 		for (int i=0; i < n-1; i+=1){ d[i+1] = v[i]; }
 		for (int i=1; i < n; i+=1){
 			int j = i + (i & -i); if (j < n){ d[j] += d[i]; }
@@ -25,7 +23,7 @@ struct BinTree {
 		return r;
 	}
 	int range(int l, int r){ return sum(r) - sum(l-1); }
-	void get(int i){ return range(i,i); }
+	int get(int i){ return range(i,i); }
 };
 
 /* ---------------------------------------- */
@@ -45,9 +43,9 @@ void resolve(vector<int> & odds, int q){
 		if (k == 0){
 			cin >> i >> x;
 			i -= 1;
-			if (isOdd(x) && b.range(i,i) == 0)
+			if (isOdd(x) && b.get(i) == 0)
 				b.update(i, 1);
-			if (!isOdd(x) && b.range(i,i) == 1)
+			if (!isOdd(x) && b.get(i) == 1)
 				b.update(i, -1);
 		}
 		if (k == 1){
