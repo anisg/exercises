@@ -2,6 +2,9 @@
 
 using namespace std;
 
+/* ---------------------------------------- */
+/* ------------- Data structures ---------- */
+
 // SegmentTree : update, range
 template<typename T> struct SegmentTree {
 	vector<T> d; int n; T (*fn)(T a, T b); T zero;
@@ -31,19 +34,35 @@ template<typename T> struct SegmentTree {
 	T range(int l, int r) { return _range(0,n-1, l,r, 0); }
 };
 
-int sum(int a, int b){ return a + b; }
-//int maximum(int a, int b){ return max(a,b); }
+/* ---------------------------------------- */
+/* -------------   Solution   ------------- */
+
+int minimum(int a, int b){ return min(a,b); }
+
+void resolve(vector<int> & v, int n, int q){
+	SegmentTree<int> t(v, &minimum, INT_MAX);
+	for (int _ = 0; _ < q; _ += 1){
+		char c; int l,r,x,y;
+		cin >> c;
+		if (c == 'q'){
+			cin >> l >> r;
+			cout << t.range(l-1,r-1) << "\n";
+		} else {
+			cin >> x >> y;
+			t.update(x-1, y);
+		}
+	}
+}
 
 int main(){
-	SegmentTree<int> t({0,1,2,3,4}, &sum);
+	int n,q;
+	vector<int> v;
 
-	cout << t.range(1,3) << "\n";
-	cout << t.range(0,2) << "\n";
-	cout << t.range(0,1) << "\n";
-	cout << t.range(0,0) << "\n";
-	t.update(0, 5);
-	cout << "Update" << "\n";
-	cout << t.range(0,0) << "\n";
-	cout << t.range(0,1) << "\n";
-	cout << t.range(0,2) << "\n";
+	cin >> n >> q;
+	for (int _ = 0; _ < n; _ += 1){
+		int a;
+		cin >> a;
+		v.push_back(a);
+	}
+	resolve(v, n, q);
 }
