@@ -46,7 +46,7 @@ void resolve(vector<int> & v, int n, int q){
 		cin >> c;
 		if (c == 'q'){
 			cin >> l >> r;
-			cout << t.range(l-1,r-1) << "\n";
+			print(t.range(l-1,r-1));
 		} else {
 			cin >> x >> y;
 			t.update(x-1, y);

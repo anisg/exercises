@@ -26,6 +26,15 @@ ostream& operator<<(ostream& os, vector<T> & v) {
 	return os;
 }
 
+printVector(){
+	for (size_t i = 0; i < v.size(); i += 1){
+		cout << v[i];
+		if (i + 1 < v.size())
+			cout << " ";
+	}
+	cout << "\n";
+}
+
 int main()
 {
 	vector<int> v;

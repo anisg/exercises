@@ -1,0 +1,2 @@
+	cout << "name" << group.name << endl;
+
