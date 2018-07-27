@@ -10,104 +10,88 @@ template<typename T> void print(T t) {cout << t << "\n";} template<typename T, t
 
 typedef unordered_map<int,bool> imap;
 
-void dfsInit(int a, auto & v, auto & adj, auto & s, auto & adj2){
+void dfsInit(int a, imap & v, vector<imap> & adj, vector<imap> & rev, auto & s){
 	if (v[a])
 		return ;
 	v[a] = true;
 	for (auto p : adj[a]){
 		int b = p.first;
-		adj2[b][a] = true;
-		dfsInit(b,v,adj,s, adj2);
+		rev[b][a] = true;
+		dfsInit(b,v,adj,rev, s);
 	}
 	s.push(a);
 }
 
-void dfsPrint(int a, auto & v, auto & adj){
-	if (v[a])
-		return ;
-	print(a, ", edges:", adj[a].size());
-	v[a] = true;
-	for (auto p : adj[a]){
-		int b = p.first;
-		print("       >", b, (v[b] ? " (already visited)" : ""));
-		dfsPrint(b,v,adj);
-	}
-}
-
-void dfsMerge(int a, auto & v, auto & adj, int x, auto & um){
+void dfsPrep(int a, imap & v, vector<imap> & adj, int x, auto & um){
 	if (v[a])
 		return ;
 	um[a] = x;
 	v[a] = true;
 	for (auto p : adj[a]){
 		int b = p.first;
-		//swap back by replacing a with x
-		dfsMerge(b, v, adj, x, um);
+		dfsPrep(b, v, adj, x, um);
 	}
 }
 
-void dfsChange(int a, auto & v, auto & adj, auto & adj2, auto & um){
+void dfsChange(int a, imap & v, vector<imap> & adj, vector<imap> & merged, auto & um){
 	if (v[a])
 		return ;
 	v[a] = true;
 	for (auto p : adj[a]){
 		int b = p.first;
-		adj2[um[a]][um[b]] = true;
-		dfsChange(b,v,adj,adj2,um);
+		merged[um[a]][um[b]] = true;
+		dfsChange(b,v,adj,merged,um);
 	}
-	adj2[um[a]].erase(um[a]);
+	merged[um[a]].erase(um[a]);
 }
 
-void mergeStrongComponents(vector<int> & nodes, vector<imap> & adj, int n){
+void mergeStrongComponents(vector<int> & ns, vector<imap> & adj, int n){
 	stack<int> s;
-	vector<imap> adj2(n);
+	vector<imap> rev(n);
 	imap v;
 
-	v = {};
 	for (int i = 0; i < n; i += 1){
-		dfsInit(i, v, adj, s, adj2);
+		dfsInit(i, v, adj, rev, s);
 	}
-
 	unordered_map<int,int> um;
 	v = {};
 	while (!s.empty()){
 		int x = s.top();
 		if (!v[x])
-			nodes.push_back(x);
-		dfsMerge(x, v, adj2, x, um);
+			ns.push_back(x);
+		dfsPrep(x, v, rev, x, um);
 		s.pop();
 	}
-	vector<imap> adj3(n);
+	vector<imap> merged(n);
 	v = {};
-	for (int i = 0; i < nodes.size(); i += 1){
-		dfsChange(nodes[i], v, adj, adj3, um);
+	for (int i = 0; i < ns.size(); i += 1){
+		dfsChange(ns[i], v, adj, merged, um);
 	}
-
-	print("--");
-	v = {};
-	for (int i = 0;i < nodes.size(); i += 1){
-		dfsPrint(nodes[i], v, adj3);
-	}
-	adj = adj3;
+	adj = merged;
 }
 
-int countLeaves(int a, vector<imap> & adj, imap & v){
-	if (v[a])
-		return 0;
-	v[a] = true;
-	print("node:", a, ", size:", adj[a].size());
-	if (adj[a].size() == 0)
-		return 1;
-	int c = 0;
-	for (auto p : adj[a]){
-		int b = p.first;
-		c += countLeaves(b, adj, v);
+int inDegreeZero(vector<int> & ns, vector<imap> & adj){
+	imap v; int r = ns.size();
+	for (int i = 0; i < ns.size(); i += 1){
+		for (auto p : adj[ns[i]]){
+			if (!v[p.first])
+				v[p.first]=true;
+		}
 	}
-	return c;
+	return r - v.size();
+}
+
+int outDegreeZero(vector<int> & ns, vector<imap> & adj){
+	int r = 0;
+	for (int i = 0; i < ns.size(); i += 1){
+		if (adj[ns[i]].size() == 0)
+			r += 1;
+	}
+	return r;
 }
 
 int solve(int n, int m){
-	vector<int> nodes;
+	vector<int> ns;
 	vector<imap> adj(n);
 
 	//get edges
@@ -118,22 +102,11 @@ int solve(int n, int m){
 		if (a != b)
 			adj[a][b] = true;
 	}
-	//merge loop nodes
-	mergeStrongComponents(nodes, adj, n);
+	mergeStrongComponents(ns, adj, n);
 	//get number of aditional implications
-	imap v = {};
-	int c = 0;
-	print("size:",nodes.size());
-	int l;
-	for (int i = 0; i < nodes.size(); i += 1){
-		if (v[nodes[i]])
-			continue ;
-		l = countLeaves(nodes[i], adj, v);
-		c += l;
-	}
-	if (nodes.size() == 1)
-		c -= 1;
-	return c;
+	if (ns.size() == 1)
+		return 0;
+	return max(inDegreeZero(ns, adj), outDegreeZero(ns, adj));
 }
 
 int main(){

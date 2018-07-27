@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// SegmentTree : update, range
+// SegmentTree : update(i, v), range(l, r)
 template<typename T> struct SegmentTree {
 	vector<T> d; int n; T (*fn)(T a, T b); T zero;
 	SegmentTree(vector<T> & v, T (*f)(T a, T b), T z = {}) : n((int)v.size()), fn(f), zero(z) {
